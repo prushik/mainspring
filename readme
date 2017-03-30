@@ -1,0 +1,15 @@
+# mainspring
+Very experimental compiler/assembler/programming language
+
+# Warning
+Mainspring is very experimental. Mainspring is also in very early stages of development. Mainspring is also very much not uncalled for. Don't expect this to do what you want, be of reasonable quality, or even not destroy your computer.
+
+# Intro
+Mainspring is an experimental programming language and compiler/assembler for the language. The language is a cross between a compiled language and assembly.
+
+# Tools
+In addition to the Mainspring compiler, this distribution includes several standalone tools which make use of Mainspring code to accomplish other tasks. These tools include:
+ - calc - A bc-like calculator, which uses Mainsprings tokenizer and expression processing features.
+ It operates on 64 or 32 bit integers instead of arbitrary precision, and processes expressions left-to-right. All Mainspring operators are supported.
+ - dial - A syntax highligher. Takes plain text source code as input and outputs the source code formatted in HTML, with syntax highlighted and anchors attached to all unique symbols.
+ dial uses Mainspring's tokenizer. In the future, it will hopefully also be capable of parsing other similar languages and outputting in other formats.
