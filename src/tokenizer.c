@@ -4,10 +4,6 @@
 #include <unistd.h>
 #include "tokenizer.h"
 
-//this shouldn't be here but stuff needs to change before it can be moved
-//this memory should be controlled by the calling code
-struct token *token_array;
-
 int id_token_str(const char *token)
 {
 	int i,j;
@@ -26,12 +22,12 @@ int id_operator(const char *op_str, int len)
 	int i;
 	for (i=0;i<sizeof(operator);i++)
 	{
-		if (strlen(operator[i]) == len && strncmp(operator[i],op_str,len) == 0)
+		if (strlen(operator[i]) == len && strncmp(operator[i], op_str, len) == 0)
 			return i;
 	}
 }
 
-int tokenize(const char *expr, unsigned int len)
+int count_tokens(const char *expr, unsigned int len)
 {
 	int cur_tok,n_tok=0;
 	int i,j;
@@ -47,15 +43,23 @@ int tokenize(const char *expr, unsigned int len)
 
 		if (char_set[cur_tok][j] != expr[i])
 		{
-			// woo, the last token is finishy, start next token
+			// woo, the previous token is finished, start next token
 			cur_tok = id_token_str(&expr[i]);
 			if (cur_tok != CHAR_TYPE_WHT) n_tok++;
 		}
 	}
 
+	return n_tok;
+}
+
+int tokenize(const char *expr, unsigned int len, struct token *token_array)
+{
+	int cur_tok, n_tok;
+	int i,j;
+
 	// Now we know how many tokens exist, lets count them
-	token_array = malloc(sizeof(struct token)*(n_tok+1));
-	printf("Tokens: %d\n",n_tok);
+//	token_array = malloc(sizeof(struct token)*(n_tok+1));
+//	printf("Tokens: %d\n",n_tok);
 
 	//We figured out how many tokens there are, now lets figure out what they are and how to handle them
 	n_tok = 0;
@@ -78,7 +82,7 @@ int tokenize(const char *expr, unsigned int len)
 				// Interpret the token to get it into a more usable form
 				if (cur_tok == CHAR_TYPE_NUM)
 				{
-					token_array[n_tok].sym = strtol(token_array[n_tok].text,NULL,0);
+					token_array[n_tok].sym = strtol(token_array[n_tok].text, NULL, 0);
 				}
 				if (cur_tok == CHAR_TYPE_GRP)
 				{
@@ -109,7 +113,7 @@ int tokenize(const char *expr, unsigned int len)
 		// Interpret the token to get it into a more usable form
 		if (cur_tok == CHAR_TYPE_NUM)
 		{
-			token_array[n_tok].sym = strtol(token_array[n_tok].text,NULL,0);
+			token_array[n_tok].sym = strtol(token_array[n_tok].text, NULL,0);
 		}
 		if (cur_tok == CHAR_TYPE_GRP)
 		{
@@ -127,144 +131,134 @@ int tokenize(const char *expr, unsigned int len)
 	}
 
 	return n_tok;
-
-
-	for (i=0;i<=n_tok;i++)
-	{
-		write(1,token_array[i].text,token_array[i].text_len);
-		printf(" : %x : %d \n",token_array[i].sym,token_array[i].type);
-	}
 }
 
 //This function will print an error message and nullify an invalid expression to prevent it from processing
-int expr_error(const char *msg, int tok_n)
+int expr_error(const char *msg, int tok_n, struct token *token_array)
 {
 	printf("Error related to token #%d (\"",tok_n);
 	int i;
-	for (i=0;i<token_array[tok_n].text_len;i++)
-		printf("%c",token_array[tok_n].text[i]);
+//	for (i=0;i<token_array[tok_n].text_len;i++)
+//		printf("%c",token_array[tok_n].text[i]);
 	printf("\"): %s\n",msg);
 	return -1;
 }
 
 // This function should find the "l arg" for an operation
-int find_l_arg(int op_n)
+int find_l_arg(int op_n, struct token *token_array)
 {
 	int i,op_level = token_array[op_n].level;
 	for (i=op_n-1; i>=0; i--)
 	{
 		if (token_array[i].level < op_level)
-			return expr_error("Missing lvalue operand",op_n);
+			return expr_error("Missing lvalue operand", op_n, token_array);
 
 		if (token_array[i].type == CHAR_TYPE_NUM)
 			return i;
 	}
-	return expr_error("Missing lvalue operand",op_n);
+	return expr_error("Missing lvalue operand", op_n, token_array);
 }
 
 // This function should find the "r arg" for an operation
-int find_r_arg(int op_n, int len)
+int find_r_arg(int op_n, int len, struct token *token_array)
 {
 	int i,op_level = token_array[op_n].level;
 	for (i=op_n+1; i<=len; i++)
 	{
 		if (token_array[i].level < op_level)
-			return expr_error("Missing rvalue operand",op_n);
+			return expr_error("Missing rvalue operand", op_n, token_array);
 
 		if (token_array[i].type == CHAR_TYPE_NUM)
 			return i;
 	}
-	return expr_error("Missing rvalue operand",op_n);
+	return expr_error("Missing rvalue operand", op_n, token_array);
 }
 
 //This function should find the appropriate args for an operator, perform the operation, and reduce the expression
-int process_operator(int op_n, int len)
+int process_operator(int op_n, int len, struct token *token_array)
 {
 	int l,r;
 	int result = token_array[op_n].sym;
 	int op = token_array[op_n].sym;
 
-	if (r==-1 || l==-1)
-		return -1;
-
 	switch (op)
 	{
 		case OP_ADD:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
-			result = token_array[l].sym+token_array[r].sym;
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
+			result = token_array[l].sym + token_array[r].sym;
 			break;
 		case OP_SUB:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
-			result = token_array[l].sym-token_array[r].sym;
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
+			result = token_array[l].sym - token_array[r].sym;
 			break;
 		case OP_MUL:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
-			result = token_array[l].sym*token_array[r].sym;
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
+			result = token_array[l].sym * token_array[r].sym;
 			break;
 		case OP_DIV:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
-			result = token_array[l].sym/token_array[r].sym;
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
+			result = token_array[l].sym / token_array[r].sym;
 			break;
 		case OP_MOD:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
-			result = token_array[l].sym%token_array[r].sym;
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
+			result = token_array[l].sym % token_array[r].sym;
 			break;
 		case OP_LSFT:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
-			result = token_array[l].sym<<token_array[r].sym;
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
+			result = token_array[l].sym << token_array[r].sym;
 			break;
 		case OP_RSFT:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
-			result = token_array[l].sym>>token_array[r].sym;
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
+			result = token_array[l].sym >> token_array[r].sym;
 			break;
 		case OP_AND:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
 			result = token_array[l].sym & token_array[r].sym;
 			break;
 		case OP_OR:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
-			result = token_array[l].sym|token_array[r].sym;
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
+			result = token_array[l].sym | token_array[r].sym;
 			break;
 		case OP_XOR:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
-			result = token_array[l].sym^token_array[r].sym;
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
+			result = token_array[l].sym ^ token_array[r].sym;
 			break;
 		case OP_NOT:
-			r = find_r_arg(op_n,len);
+			r = find_r_arg(op_n, len, token_array);
 			result = ~token_array[r].sym; // This is a special case (single arg operator) and should not require or consume lvalue
 			break;
 		case OP_COM:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
 			result = token_array[r].sym; //This DOES require an lvalue, but it is ignored
 			break;
 		case OP_EQU:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
 			result = token_array[l].sym == token_array[r].sym;
 			break;
 		case OP_LT:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
 			result = token_array[l].sym < token_array[r].sym;
 			break;
 		case OP_GT:
-			r = find_r_arg(op_n,len);
-			l = find_l_arg(op_n);
+			r = find_r_arg(op_n, len, token_array);
+			l = find_l_arg(op_n, token_array);
 			result = token_array[l].sym > token_array[r].sym;
 			break;
 		default:
-			return expr_error("Unknown operator",op_n);
+			return expr_error("Unknown operator", op_n, token_array);
 			break;
 	}
 	token_array[op_n].sym = result;
@@ -274,7 +268,7 @@ int process_operator(int op_n, int len)
 	token_array[r].type = CHAR_TYPE_NUL;
 }
 
-int process_expression(int len)
+int process_expression(int len, struct token *token_array)
 {
 	int i,max_level=0;
 	for (i=0;i<=len;i++)
@@ -285,7 +279,7 @@ int process_expression(int len)
 		{
 			if (token_array[i].type == CHAR_TYPE_OPR && token_array[i].level == max_level)
 			{
-				process_operator(i, len);
+				process_operator(i, len, token_array);
 			}
 		}
 

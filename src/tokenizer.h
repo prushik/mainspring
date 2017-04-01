@@ -53,9 +53,10 @@ static const char *char_set[] = {"0123456789xabcdefABCDEF","_ABCDEFGHIJKLMNOPQRS
 
 int id_token_str(const char *token);
 int id_operator(const char *op_str, int len);
-int tokenize(const char *expr, unsigned int len);
-int expr_error(const char *msg, int tok_n);
-int find_l_arg(int op_n);
-int find_r_arg(int op_n, int len);
-int process_operator(int op_n, int len);
-int process_expression(int len);
+int count_tokens(const char *expr, unsigned int len);
+int tokenize(const char *expr, unsigned int len, struct token *token_array);
+int expr_error(const char *msg, int tok_n, struct token *token_array);
+int find_l_arg(int op_n, struct token *token_array);
+int find_r_arg(int op_n, int len, struct token *token_array);
+int process_operator(int op_n, int len, struct token *token_array);
+int process_expression(int len, struct token *token_array);
