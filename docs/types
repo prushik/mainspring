@@ -14,8 +14,19 @@ represent only the size of the data.
 32 bits
 
 # qword
-64 bits
-
+64 bits. Since Mainspring runs only on 64 bit systems, qwords are also 
+used to store memory addresses.
 
 # 80
 This data type can only used for operations on 80 bit registers.
+
+# registers
+In addition to the Mainsprings data size keywords, Mainspring also 
+allows specifying register names as size keywords. If a register name 
+is used to declare a variable, Mainspring guarentees that register will 
+be used to store the value of the variable. Mainspring will attempt to 
+ensure that no other variables will overwrite the specified register, 
+however, there are cases where this is not possible. If such a case 
+arises, the Mainspring compiler will issue a warning. If multiple 
+variables are declared occupying the same register, the variables will 
+point to the same value.

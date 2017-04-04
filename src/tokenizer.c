@@ -15,6 +15,7 @@ int id_token_str(const char *token)
 				return i;
 		}
 	}
+	return CHAR_TYPE_INV;
 }
 
 int id_operator(const char *op_str, int len)
@@ -25,6 +26,7 @@ int id_operator(const char *op_str, int len)
 		if (strlen(operator[i]) == len && strncmp(operator[i], op_str, len) == 0)
 			return i;
 	}
+	return OP_COM; // ? I needed something to use for invalid operators
 }
 
 int count_tokens(const char *expr, unsigned int len)
@@ -45,7 +47,9 @@ int count_tokens(const char *expr, unsigned int len)
 		{
 			// woo, the previous token is finished, start next token
 			cur_tok = id_token_str(&expr[i]);
-			if (cur_tok != CHAR_TYPE_WHT) n_tok++;
+			// should we make a token for whitespace? for now we will, but later maybe we remove...
+//			if (cur_tok != CHAR_TYPE_WHT)
+			n_tok++;
 		}
 	}
 
@@ -99,15 +103,17 @@ int tokenize(const char *expr, unsigned int len, struct token *token_array)
 				}
 			}
 			cur_tok = id_token_str(&expr[i]); // learn what the next token is
-			if (cur_tok != CHAR_TYPE_WHT) {
+//			if (cur_tok != CHAR_TYPE_WHT)
+//			{
 				n_tok++;
 				token_array[n_tok].type = cur_tok;
 				token_array[n_tok].text = &expr[i];
 				token_array[n_tok].level = level;
-			}
+//			}
 		}
 	}
-	if (cur_tok != CHAR_TYPE_WHT) {
+//	if (cur_tok != CHAR_TYPE_WHT)
+//	{
 		token_array[n_tok].text_len = (&expr[i]) - token_array[n_tok].text;
 
 		// Interpret the token to get it into a more usable form
@@ -128,7 +134,7 @@ int tokenize(const char *expr, unsigned int len, struct token *token_array)
 		{
 			token_array[n_tok].sym = id_operator(token_array[n_tok].text, token_array[n_tok].text_len);
 		}
-	}
+//	}
 
 	return n_tok;
 }
@@ -262,6 +268,14 @@ int process_operator(int op_n, int len, struct token *token_array)
 			r = find_r_arg(op_n, len, token_array);
 			l = find_l_arg(op_n, token_array);
 			result = token_array[l].sym > token_array[r].sym;
+			break;
+		case OP_INC:
+			l = find_l_arg(op_n, token_array);
+			result = token_array[l].sym +1;
+			break;
+		case OP_DEC:
+			l = find_l_arg(op_n, token_array);
+			result = token_array[l].sym - 1;
 			break;
 		default:
 			return expr_error("Unknown operator", op_n, token_array);

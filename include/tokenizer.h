@@ -32,7 +32,10 @@ static const char *reserved[] = {"auto","break","case","char","const","continue"
 #define OP_GT 17
 #define OP_LT 18
 #define OP_COM 19
-static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&","|","&&","||","!","^","~",">","<",","};
+#define OP_DOT 20
+#define OP_INC 21
+#define OP_DEC 22
+static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&","|","&&","||","!","^","~",">","<",",",".","++","--"};
 
 #define CHAR_TYPE_INV -1
 #define CHAR_TYPE_NUM 0
@@ -42,8 +45,8 @@ static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&"
 #define CHAR_TYPE_OPR 4
 #define CHAR_TYPE_STR 5
 #define CHAR_TYPE_NUL 6
-static const char *char_ini[] = {"0123456789",              "#.;_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~", "\""};
-static const char *char_set[] = {"0123456789xabcdefABCDEF", "#.;_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~", ""};
+static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.", "\""};
+static const char *char_set[] = {"0123456789xabcdefABCDEF", "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.", ""};
 static const char *char_end[] = {"",                        "",                                                                "",          "",       "",               "\""};
 
 int id_token_str(const char *token);
