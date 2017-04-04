@@ -1,0 +1,57 @@
+Mainspring Calls
+
+One of Mainspring's main features is its flexibility in its calls to 
+other code. There are many ways that Mainspring can call into other 
+code.
+
+e.g.
+
+jmp exit;
+
+exit:
+	goto cleanup;
+
+
+# Jumps and goto
+The simplest way to call other code in Mainspring is to use as jump 
+instruction. Since Mainspring allows directly embedding assembly 
+instructions, jump instructions, including conditional jump 
+instructions can easily be used to call other routines. The goto 
+keyword is equivalent to a jump instruction.
+When a jump or goto is used, Mainspring does not manage arguments for 
+the code being called, nor does it store a return address, regardless 
+of how the function you are jumping into has been declared.
+
+# Calling external code or implicitly declared code
+Any calls outside to code not declared in the Mainspring source (e.g. 
+an external library), are assumed to use the default calling convention 
+for the platform. This also applies to any symbols defined in the 
+Mainspring source, but not declared with a specific calling convention.
+
+e.g.
+
+display("Hello World");
+
+display:
+	len = strlen(rdi);
+	write(1, rdi, len); 
+
+
+# Flexible calling conventions
+Mainspring allows calling conventions to be explicitly defined on a 
+per function basis. This enables programming techniques not commonly 
+available in other language, and can simplify an optimize many common 
+types of calls.
+For instance, system calls can be declared as functions explicitly 
+defining a calling convention that matches the kernel system call 
+convention, which eliminates the need for wrapper functions.
+Another interesting possibility is for a function to have multiple 
+return values, something Mainspring can do easily.
+
+e.g.
+
+rax system_call(rax syscall_num, rdi arg1, rsi arg2, rdx arg3, r10 arg4, r8 arg5, r9 arg6)
+{
+	syscall;
+	ret;
+}
