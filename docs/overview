@@ -1,0 +1,10 @@
+Mainspring Language Overview
+
+The Mainspring programming language aims to give programmers as much 
+power as possible, never limiting what can be done, and to be as fast 
+as possible, and as simple to write as possible. Mainspring accomplishes 
+this by being very close to the hardware, but still allowing higher 
+level concepts. However, unlike most higher level languages, Mainspring 
+allows programmers a high degree of control over how higher level 
+constructs function.
+

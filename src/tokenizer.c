@@ -138,8 +138,8 @@ int expr_error(const char *msg, int tok_n, struct token *token_array)
 {
 	printf("Error related to token #%d (\"",tok_n);
 	int i;
-//	for (i=0;i<token_array[tok_n].text_len;i++)
-//		printf("%c",token_array[tok_n].text[i]);
+	for (i=0;i<token_array[tok_n].text_len;i++)
+		printf("%c",token_array[tok_n].text[i]);
 	printf("\"): %s\n",msg);
 	return -1;
 }
@@ -154,7 +154,10 @@ int find_l_arg(int op_n, struct token *token_array)
 			return expr_error("Missing lvalue operand", op_n, token_array);
 
 		if (token_array[i].type == CHAR_TYPE_NUM)
+		{
+			token_array[i].type = CHAR_TYPE_NUL;
 			return i;
+		}
 	}
 	return expr_error("Missing lvalue operand", op_n, token_array);
 }
@@ -169,7 +172,10 @@ int find_r_arg(int op_n, int len, struct token *token_array)
 			return expr_error("Missing rvalue operand", op_n, token_array);
 
 		if (token_array[i].type == CHAR_TYPE_NUM)
+		{
+			token_array[i].type = CHAR_TYPE_NUL;
 			return i;
+		}
 	}
 	return expr_error("Missing rvalue operand", op_n, token_array);
 }
@@ -263,9 +269,6 @@ int process_operator(int op_n, int len, struct token *token_array)
 	}
 	token_array[op_n].sym = result;
 	token_array[op_n].type = CHAR_TYPE_NUM;
-
-	token_array[l].type = CHAR_TYPE_NUL;
-	token_array[r].type = CHAR_TYPE_NUL;
 }
 
 int process_expression(int len, struct token *token_array)

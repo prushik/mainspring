@@ -1,0 +1,21 @@
+Mainspring Data Types
+
+Unlike most other languages, Mainspring's simple data types, do not 
+attempt to represent the type of data stored in them, instead, they 
+represent only the size of the data.
+
+# byte
+8 bits
+
+# word
+16 bits
+
+# dword
+32 bits
+
+# qword
+64 bits
+
+
+# 80
+This data type can only used for operations on 80 bit registers.
