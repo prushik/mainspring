@@ -113,6 +113,7 @@ int tokenize(const char *expr, unsigned int len, struct token *token_array)
 //			}
 		}
 	}
+
 //	if (cur_tok != CHAR_TYPE_WHT)
 //	{
 		token_array[n_tok].text_len = (&expr[i]) - token_array[n_tok].text;

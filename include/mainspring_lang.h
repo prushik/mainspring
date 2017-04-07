@@ -42,9 +42,10 @@ static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&"
 #define CHAR_TYPE_GRP 3
 #define CHAR_TYPE_OPR 4
 #define CHAR_TYPE_STR 5
-#define CHAR_TYPE_NUL 6
+#define CHAR_TYPE_SPE 6
+#define CHAR_TYPE_NUL 7
 
-#define CHARSETS 6
-static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.:", "\""};
-static const char *char_set[] = {"0123456789xabcdefABCDEF", "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.:", ""};
-static const char *char_end[] = {"",                        "",                                                                "",          "",       "",                 "\""};
+#define CHARSETS 7
+static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.:", "\"", "#;\\"};
+static const char *char_set[] = {"0123456789xabcdefABCDEF", "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.:", "",   "#;\\"};
+static const char *char_end[] = {"",                        "",                                                                "",          "",       "",                 "\"", ""};

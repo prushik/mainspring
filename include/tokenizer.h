@@ -93,10 +93,10 @@ struct token
 #endif
 
 #ifndef CHARSETS
-	#define CHARSETS 6
-	static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.", "\""};
-	static const char *char_set[] = {"0123456789xabcdefABCDEF", "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.", ""};
-	static const char *char_end[] = {"",                        "",                                                                "",          "",       "",               "\""};
+	#define CHARSETS 7
+	static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.", "\"", "#;\\"};
+	static const char *char_set[] = {"0123456789xabcdefABCDEF", "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.", "",   "#;\\"};
+	static const char *char_end[] = {"",                        "",                                                                "",          "",       "",                "\"", ""};
 #endif
 
 #ifndef CHAR_TYPE_INV
@@ -105,22 +105,25 @@ struct token
 #ifndef CHAR_TYPE_NUM
 	#define CHAR_TYPE_NUM CHAR_TYPE_INV
 #endif
-#ifndef CHAR_TYPE_NUM
+#ifndef CHAR_TYPE_SYM
 	#define CHAR_TYPE_SYM CHAR_TYPE_INV
 #endif
-#ifndef CHAR_TYPE_NUM
+#ifndef CHAR_TYPE_WHT
 	#define CHAR_TYPE_WHT CHAR_TYPE_INV
 #endif
-#ifndef CHAR_TYPE_NUM
+#ifndef CHAR_TYPE_GRP
 	#define CHAR_TYPE_GRP CHAR_TYPE_INV
 #endif
-#ifndef CHAR_TYPE_NUM
+#ifndef CHAR_TYPE_OPR
 	#define CHAR_TYPE_OPR CHAR_TYPE_INV
 #endif
-#ifndef CHAR_TYPE_NUM
+#ifndef CHAR_TYPE_STR
 	#define CHAR_TYPE_STR CHAR_TYPE_INV
 #endif
-#ifndef CHAR_TYPE_NUM
+#ifndef CHAR_TYPE_SPE
+	#define CHAR_TYPE_STR CHAR_TYPE_INV
+#endif
+#ifndef CHAR_TYPE_NUL
 	#define CHAR_TYPE_NUL CHAR_TYPE_INV
 #endif
 
