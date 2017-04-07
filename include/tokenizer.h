@@ -92,7 +92,7 @@ struct token
 	#define OP_DEC OP_COM
 #endif
 
-#ifndef CHAR_SETS
+#ifndef CHARSETS
 	#define CHARSETS 6
 	static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.", "\""};
 	static const char *char_set[] = {"0123456789xabcdefABCDEF", "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.", ""};

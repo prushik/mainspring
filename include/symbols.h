@@ -12,4 +12,4 @@ struct symbol
 	int size;
 	int type;
 	int reg;
-}
+};
