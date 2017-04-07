@@ -7,7 +7,7 @@
 int id_token_str(const char *token)
 {
 	int i,j;
-	for (i = 0; i < (sizeof(char_ini)>>3); i++)
+	for (i = 0; i < CHARSETS; i++)
 	{
 		for (j = 0; j < strlen(char_ini[i]); j++)
 		{
@@ -21,7 +21,7 @@ int id_token_str(const char *token)
 int id_operator(const char *op_str, int len)
 {
 	int i;
-	for (i=0;i<sizeof(operator);i++)
+	for (i = 0; i < OPERATORS; i++)
 	{
 		if (strlen(operator[i]) == len && strncmp(operator[i], op_str, len) == 0)
 			return i;
@@ -80,7 +80,8 @@ int tokenize(const char *expr, unsigned int len, struct token *token_array)
 
 		if (char_set[cur_tok][j] != expr[i])
 		{
-			if (cur_tok != CHAR_TYPE_WHT) {
+//			if (cur_tok != CHAR_TYPE_WHT)
+//			{
 				token_array[n_tok].text_len = (&expr[i]) - token_array[n_tok].text;
 
 				// Interpret the token to get it into a more usable form
@@ -101,7 +102,7 @@ int tokenize(const char *expr, unsigned int len, struct token *token_array)
 				{
 					token_array[n_tok].sym = id_operator(token_array[n_tok].text, token_array[n_tok].text_len);
 				}
-			}
+//			}
 			cur_tok = id_token_str(&expr[i]); // learn what the next token is
 //			if (cur_tok != CHAR_TYPE_WHT)
 //			{

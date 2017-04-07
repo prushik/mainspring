@@ -1,3 +1,5 @@
+#include "mainspring_lang.h"
+
 struct token
 {
 	int type;
@@ -5,49 +7,122 @@ struct token
 	int group;
 	int sym;
 	int text_len;
-	char *text;
+	const char *text;
 	int argc;
 	struct token *argv[6];
 };
 
-static const char *reserved[] = {"auto","break","case","char","const","continue","default","do","double","else","enum","extern","float","for","goto","if","int","long","register","return","short","signed","static","struct","switch","typedef","union","unsigned","void","volitile","while","_Packed"};
+#ifndef RESERVED_KEYWORDS
+	#define RESERVED_KEYWORDS 24
+	static const char *reserved[] = {"auto","break","case","char","const","continue","default","do","double","else","enum","extern","float","for","goto","if","int","long","register","return","short","signed","static","struct","switch","typedef","union","unsigned","void","volitile","while","_Packed"};
+#endif
 
-#define OP_ADD 0
-#define OP_SUB 1
-#define OP_MUL 2
-#define OP_DIV 3
-#define OP_MOD 4
-#define OP_LSFT 5
-#define OP_RSFT 6
-#define OP_SET 7
-#define OP_EQU 8
-#define OP_NEQ 9
-#define OP_AND 10
-#define OP_OR 11
-#define OP_LAND 12
-#define OP_LOR 13
-#define OP_LNO 14
-#define OP_XOR 15
-#define OP_NOT 16
-#define OP_GT 17
-#define OP_LT 18
-#define OP_COM 19
-#define OP_DOT 20
-#define OP_INC 21
-#define OP_DEC 22
-static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&","|","&&","||","!","^","~",">","<",",",".","++","--"};
+#ifndef OPERATORS
+	#define OPERATORS 23
+	static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&","|","&&","||","!","^","~",">","<",",",".","++","--"};
+#endif
 
-#define CHAR_TYPE_INV -1
-#define CHAR_TYPE_NUM 0
-#define CHAR_TYPE_SYM 1
-#define CHAR_TYPE_WHT 2
-#define CHAR_TYPE_GRP 3
-#define CHAR_TYPE_OPR 4
-#define CHAR_TYPE_STR 5
-#define CHAR_TYPE_NUL 6
-static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.", "\""};
-static const char *char_set[] = {"0123456789xabcdefABCDEF", "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.", ""};
-static const char *char_end[] = {"",                        "",                                                                "",          "",       "",               "\""};
+#ifndef OP_COM
+	#define OP_COM 19
+#endif
+#ifndef OP_ADD
+	#define OP_ADD OP_COM
+#endif
+#ifndef OP_SUB
+	#define OP_SUB OP_COM
+#endif
+#ifndef OP_MUL
+	#define OP_MUL OP_COM
+#endif
+#ifndef OP_DIV
+	#define OP_DIV OP_COM
+#endif
+#ifndef OP_MOD
+	#define OP_MOD OP_COM
+#endif
+#ifndef OP_LSFT
+	#define OP_LSFT OP_COM
+#endif
+#ifndef OP_RSFT
+	#define OP_RSFT OP_COM
+#endif
+#ifndef OP_SET
+	#define OP_SET OP_COM
+#endif
+#ifndef OP_EQU
+	#define OP_EQU OP_COM
+#endif
+#ifndef OP_NEQ
+	#define OP_NEQ OP_COM
+#endif
+#ifndef OP_AND
+	#define OP_AND OP_COM
+#endif
+#ifndef OP_OR
+	#define OP_OR OP_COM
+#endif
+#ifndef OP_LAND
+	#define OP_LAND OP_COM
+#endif
+#ifndef OP_LOR
+	#define OP_LOR OP_COM
+#endif
+#ifndef OP_LNO
+	#define OP_LNO OP_COM
+#endif
+#ifndef OP_XOR
+	#define OP_XOR OP_COM
+#endif
+#ifndef OP_NOT
+	#define OP_NOT OP_COM
+#endif
+#ifndef OP_GT
+	#define OP_GT OP_COM
+#endif
+#ifndef OP_LT
+	#define OP_LT OP_COM
+#endif
+#ifndef OP_DOT
+	#define OP_DOT OP_COM
+#endif
+#ifndef OP_INC
+	#define OP_INC OP_COM
+#endif
+#ifndef OP_DEC
+	#define OP_DEC OP_COM
+#endif
+
+#ifndef CHAR_SETS
+	#define CHARSETS 6
+	static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.", "\""};
+	static const char *char_set[] = {"0123456789xabcdefABCDEF", "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.", ""};
+	static const char *char_end[] = {"",                        "",                                                                "",          "",       "",               "\""};
+#endif
+
+#ifndef CHAR_TYPE_INV
+	#define CHAR_TYPE_INV -1
+#endif
+#ifndef CHAR_TYPE_NUM
+	#define CHAR_TYPE_NUM CHAR_TYPE_INV
+#endif
+#ifndef CHAR_TYPE_NUM
+	#define CHAR_TYPE_SYM CHAR_TYPE_INV
+#endif
+#ifndef CHAR_TYPE_NUM
+	#define CHAR_TYPE_WHT CHAR_TYPE_INV
+#endif
+#ifndef CHAR_TYPE_NUM
+	#define CHAR_TYPE_GRP CHAR_TYPE_INV
+#endif
+#ifndef CHAR_TYPE_NUM
+	#define CHAR_TYPE_OPR CHAR_TYPE_INV
+#endif
+#ifndef CHAR_TYPE_NUM
+	#define CHAR_TYPE_STR CHAR_TYPE_INV
+#endif
+#ifndef CHAR_TYPE_NUM
+	#define CHAR_TYPE_NUL CHAR_TYPE_INV
+#endif
 
 int id_token_str(const char *token);
 int id_operator(const char *op_str, int len);

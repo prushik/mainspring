@@ -64,6 +64,18 @@ struct elf_header
 	short	sh_sect_index; // index of section header entry containing names
 };
 
+#define	ELF_PROG_TYPE_NULL
+#define	ELF_PROG_TYPE_LOAD
+#define	ELF_PROG_TYPE_DYNAMIC
+#define	ELF_PROG_TYPE_INTERP
+#define	ELF_PROG_TYPE_NOTE
+#define	ELF_PROG_TYPE_SHLIB
+#define	ELF_PROG_TYPE_PHDR
+#define	ELF_PROG_TYPE_LOOS
+#define	ELF_PROG_TYPE_HIOS
+#define	ELF_PROG_TYPE_LOPROC
+#define	ELF_PROG_TYPE_HIPROC
+
 struct elf_program_header
 {
 	int		type; //	0-3 	Type of segment (see below)
@@ -75,6 +87,30 @@ struct elf_program_header
 	long	msize; //	40-47 	Size of the segment in memory (p_memsz)
 	long	align; //	48-55 	The required alignment for this section (must be a power of 2) 
 };
+
+#define	ELF_SECT_FLAG_EXEC 1
+#define	ELF_SECT_FLAG_WRIT 2
+#define	ELF_SECT_FLAG_READ 4
+
+#define	ELF_SECT_TYPE_
+#define ELF_SECT_TYPE_NULL			0x00	// Section header table entry unused
+#define ELF_SECT_TYPE_PROGBITS		0x01	// Program data
+#define ELF_SECT_TYPE_SYMTAB		0x02	// Symbol table
+#define ELF_SECT_TYPE_STRTAB		0x03	// String table
+#define ELF_SECT_TYPE_RELA			0x04	// Relocation entries with addends
+#define ELF_SECT_TYPE_HASH			0x05	// Symbol hash table
+#define ELF_SECT_TYPE_DYNAMIC		0x06	// Dynamic linking information
+#define ELF_SECT_TYPE_NOTE			0x07	// Notes
+#define ELF_SECT_TYPE_NOBITS		0x08	// Program space with no data (bss)
+#define ELF_SECT_TYPE_REL			0x09	// Relocation entries, no addends
+#define ELF_SECT_TYPE_SHLIB			0x0A	// Reserved
+#define ELF_SECT_TYPE_DYNSYM		0x0B	// Dynamic linker symbol table
+#define ELF_SECT_TYPE_INIT_ARRAY	0x0E	// Array of constructors
+#define ELF_SECT_TYPE_FINI_ARRAY	0x0F	// Array of destructors
+#define ELF_SECT_TYPE_PREINIT_ARRAY	0x10	// Array of pre-constructors
+#define ELF_SECT_TYPE_GROUP			0x11	// Section group
+#define ELF_SECT_TYPE_SYMTAB_SHNDX	0x12	// Extended section indeces
+#define ELF_SECT_TYPE_NUM			0x13	// Number of defined types.
 
 struct elf_section_header
 {
