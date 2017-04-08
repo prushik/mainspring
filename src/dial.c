@@ -9,10 +9,28 @@
 
 struct token *token_array;
 
+inline int is_keyword(struct token *tok)
+{
+	int i,j;
+	for (i = 0; i < RESERVED_KEYWORDS; i++)
+	{
+		int len = strlen(reserved[i]);
+		if (tok->text_len != len)
+			continue;
+		
+		for (j = 0; j < len; j++)
+			if (reserved[i][j] != tok->text[j])
+				break;
+		if (j == len)
+			return 1;
+	}
+	return 0;
+}
+
 void display_tokens(struct token *tokens, int n_tokens)
 {
 	int i;
-	for (i = 0; i < n_tokens; i=i+1)
+	for (i = 0; i < n_tokens; i++)
 	{
 		if (tokens[i].type == CHAR_TYPE_NUM)
 			write(1, "\x1b[31m", 5);
@@ -23,7 +41,10 @@ void display_tokens(struct token *tokens, int n_tokens)
 		if (tokens[i].type == CHAR_TYPE_GRP)
 			write(1, "\x1b[34m", 5);
 		if (tokens[i].type == CHAR_TYPE_SYM)
-			write(1, "\x1b[35m", 5);
+			if (is_keyword(&tokens[i]))
+				write(1, "\x1b[35m", 5);
+			else
+				write(1, "\x1b[37m", 5);
 		write(1, tokens[i].text, tokens[i].text_len);
 		write(1, "\x1b[0m", 4);
 //		write(1, " ", 1);
