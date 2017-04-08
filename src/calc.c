@@ -128,7 +128,7 @@ int process_expression(int len, struct token *token_array)
 	{
 //		write(1,token_array[i].text,token_array[i].text_len);
 		if (token_array[i].type == CHAR_TYPE_NUM)
-			printf("%d %x\n",token_array[i].sym,token_array[i].sym);
+			printf("%ld %lx\n",token_array[i].sym,token_array[i].sym);
 	}
 }
 

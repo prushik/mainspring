@@ -14,20 +14,31 @@ void display_tokens(struct token *tokens, int n_tokens)
 	int i;
 	for (i = 0; i < n_tokens; i=i+1)
 	{
+		if (tokens[i].type == CHAR_TYPE_NUM)
+			write(1, "\x1b[31m", 5);
+		if (tokens[i].type == CHAR_TYPE_STR)
+			write(1, "\x1b[32m", 5);
+		if (tokens[i].type == CHAR_TYPE_OPR)
+			write(1, "\x1b[33m", 5);
+		if (tokens[i].type == CHAR_TYPE_GRP)
+			write(1, "\x1b[34m", 5);
+		if (tokens[i].type == CHAR_TYPE_SYM)
+			write(1, "\x1b[35m", 5);
 		write(1, tokens[i].text, tokens[i].text_len);
-		write(1, " ", 1);
+		write(1, "\x1b[0m", 4);
+//		write(1, " ", 1);
 	}
 }
 
 void interactive()
 {
-	char buffer[512];
+	char buffer[1024];
 
 	while (1)
 	{
-		int len = read(0,buffer,512);
-		token_array = malloc(sizeof(struct token) * (count_tokens(buffer,len)+1));
-		len = tokenize(buffer, len, token_array)+1;
+		int len = read(0, buffer, 1024);
+		token_array = malloc(sizeof(struct token) * (count_tokens(buffer, len) + 1));
+		len = tokenize(buffer, len, token_array) + 1;
 		display_tokens(token_array, len);
 		free(token_array);
 	}

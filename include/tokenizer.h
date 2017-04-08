@@ -4,7 +4,8 @@ struct token
 {
 	int type;
 	int level;
-	int group;
+	int group_id;
+	int group_depth;
 	long sym;
 	int text_len;
 	const char *text;
