@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include "tokenizer.h"
 
-inline int token_boundary(const char *expr, int pos, int type, int start_pos)
+static inline int token_boundary(const char *expr, int pos, int type, int start_pos)
 {
 	int i;
 
@@ -76,7 +76,7 @@ int count_tokens(const char *expr, unsigned int len)
 int tokenize(const char *expr, unsigned int len, struct token *token_array)
 {
 	int cur_tok, n_tok, tok_start_pos;
-	int i,j;
+	int i;
 
 	//We figured out how many tokens there are, now lets figure out what they are and how to handle them
 	n_tok = 0;

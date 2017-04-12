@@ -9,7 +9,7 @@
 
 struct token *token_array;
 
-inline int is_keyword(struct token *tok)
+static inline int is_keyword(struct token *tok)
 {
 	int i,j;
 	for (i = 0; i < RESERVED_KEYWORDS; i++)

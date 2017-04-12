@@ -9,9 +9,10 @@ Mainspring is an experimental programming language and compiler/assembler for th
 
 # Tools
 In addition to the Mainspring compiler, this distribution includes several standalone tools which make use of Mainspring code to accomplish other tasks. These tools include:
+ - winder - A mostly functional Mainspring compiler written in C. It supports enough of the Mainspring language to compile the full Mainspring compiler.
  - calc - A bc-like calculator, which uses Mainsprings tokenizer and expression processing features.
  It operates on 64 or 32 bit integers instead of arbitrary precision, and processes expressions left-to-right. All Mainspring operators are supported.
  - dial - A syntax highligher. Takes plain text source code as input and outputs the source code formatted in HTML, with syntax highlighted and anchors attached to all unique symbols.
  dial uses Mainspring's tokenizer. In the future, it will hopefully also be capable of parsing other similar languages and outputting in other formats.
  - spring - The Mainspring build system. You certainly could just use make or something else, but spring is written in Mainspring, and its simple too.
- 
+

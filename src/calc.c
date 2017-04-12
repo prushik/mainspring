@@ -106,6 +106,8 @@ int process_operator(int op_n, int len, struct token *token_array)
 	}
 	token_array[op_n].sym = result;
 	token_array[op_n].type = CHAR_TYPE_NUM;
+
+	return result;
 }
 
 int process_expression(int len, struct token *token_array)
@@ -130,6 +132,8 @@ int process_expression(int len, struct token *token_array)
 		if (token_array[i].type == CHAR_TYPE_NUM)
 			printf("%ld %lx\n",token_array[i].sym,token_array[i].sym);
 	}
+
+	return 0;
 }
 
 void interactive()

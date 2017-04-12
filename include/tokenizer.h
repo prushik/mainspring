@@ -1,4 +1,4 @@
-#include "mainspring_lang.h"
+#include "lang_config.h"
 
 struct token
 {
