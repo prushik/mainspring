@@ -4,6 +4,7 @@
 #define SYM_TYPE_VARIABLE 4
 #define SYM_TYPE_KEYWORD 5
 #define SYM_TYPE_UNKNOWN 6
+
 struct symbol
 {
 	int token_num;
@@ -14,6 +15,6 @@ struct symbol
 	int reg;
 };
 
-int keyword_index(struct token *tok);
 
+int keyword_index(struct token *tok);
 int count_symbols(struct token *tokens, int n_tok);

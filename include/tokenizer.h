@@ -1,5 +1,3 @@
-#include "lang_config.h"
-
 struct token
 {
 	int type;

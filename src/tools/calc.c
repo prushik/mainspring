@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "host_config.h"
+#include "lang_config.h"
 #include "tokenizer.h"
 
 struct token *token_array;

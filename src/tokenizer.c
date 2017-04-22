@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "host_config.h"
+#include "lang_config.h"
 #include "tokenizer.h"
 
 static inline int token_boundary(const char *expr, int pos, int type, int start_pos)

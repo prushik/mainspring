@@ -5,6 +5,8 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
+#include "host_config.h"
+#include "lang_config.h"
 #include "tokenizer.h"
 
 struct token *token_array;
