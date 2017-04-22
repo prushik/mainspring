@@ -4,3 +4,7 @@
 #include "tokenizer.h"
 #include "symbols.h"
 
+void parse(struct token *tokens, struct symbol *symbols)
+{
+	
+}

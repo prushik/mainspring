@@ -1,11 +1,15 @@
-#define RESERVED_KEYWORDS 24
+#define RESERVED_KEYWORDS 40
 static const char *reserved[] = {
 	"break","case","byte","word",
 	"dword","qword","continue","default",
 	"do","else","enum","extern",
 	"for","jump","if","register",
 	"return","signed","struct","switch",
-	"typedef","union","unsigned","while"
+	"typedef","union","unsigned","while",
+	"rax","rbx","rcx","rdx",
+	"rbp","rsp","rdi","rsi",
+	"r8","r9","r10","r11",
+	"r12","r13","r14","r15"
 };
 
 #define OP_ADD 0
