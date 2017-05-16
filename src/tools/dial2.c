@@ -73,7 +73,7 @@ void interactive()
 
 int main(int argc, char * *argv)
 {
-	int n;
+	int tok_len, sym_len;
 
 	if (argc<2)
 		interactive();
@@ -91,8 +91,12 @@ int main(int argc, char * *argv)
 
 		token_array = malloc(sizeof(struct token) * (count_tokens(src_code, status.st_size)+1));
 
-		n = tokenize(src_code, status.st_size, token_array);
-		display_tokens(token_array, n+1);
+		tok_len = tokenize(src_code, status.st_size, token_array);
+
+		sym_len = parse_count_symbols(token_array, n);
+		parse(token_array, symbol_table);
+
+		display_tokens(token_array, tok_len+1);
 	}
 
 	return 0;

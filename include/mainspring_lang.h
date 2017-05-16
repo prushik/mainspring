@@ -1,3 +1,9 @@
+#define KEY_SIZE_BYTE 2
+#define KEY_SIZE_WORD 3
+#define KEY_SIZE_DWORD 4
+#define KEY_SIZE_QWORD 5
+#define KEY_REG_RANGE_BEGIN 24
+#define KEY_REG_RANGE_END 39
 #define RESERVED_KEYWORDS 40
 static const char *reserved[] = {
 	"break","case","byte","word",
@@ -50,6 +56,6 @@ static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&"
 #define CHAR_TYPE_NUL 7
 
 #define CHARSETS 7
-static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.:", "\"", "#;\\"};
-static const char *char_set[] = {"0123456789xabcdefABCDEF", "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.:", "",   "#;\\"};
-static const char *char_end[] = {"",                        "",                                                                "",          "",       "",                 "\"", ""};
+static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.:`@$", "\"", "#;\\"};
+static const char *char_set[] = {"0123456789xabcdefABCDEF", "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.:`@$", "",   "#;\\"};
+static const char *char_end[] = {"",                        "",                                                                "",          "",       "",                    "\"", ""};
