@@ -9,8 +9,6 @@
 #include "lang_config.h"
 #include "tokenizer.h"
 
-struct token *token_array;
-
 static inline int is_keyword(struct token *tok)
 {
 	int i,j;
@@ -46,6 +44,8 @@ void display_tokens(struct token *tokens, int n_tokens)
 			write(1, "Operator: \x1b[33m", 15);
 		if (tokens[i].type == CHAR_TYPE_GRP)
 			write(1, "\x1b[34m", 5);
+		if (tokens[i].type == CHAR_TYPE_COM)
+			write(1, "\x1b[44m", 5);
 		if (tokens[i].type == CHAR_TYPE_SYM)
 			if (is_keyword(&tokens[i]))
 				write(1, "Keyword: \x1b[35m", 14);
@@ -59,14 +59,18 @@ void display_tokens(struct token *tokens, int n_tokens)
 
 void interactive()
 {
+	int tok_len, sym_len;
+	struct symbol *symbol_table;
+	struct token *token_array;
+
 	char buffer[1024];
 
 	while (1)
 	{
-		int len = read(0, buffer, 1024);
-		token_array = malloc(sizeof(struct token) * (count_tokens(buffer, len) + 1));
-		len = tokenize(buffer, len, token_array) + 1;
-		display_tokens(token_array, len);
+		int tok_len = read(0, buffer, 1024);
+		token_array = malloc(sizeof(struct token) * (count_tokens(buffer, tok_len) + 1));
+		tok_len = tokenize(buffer, tok_len, token_array) + 1;
+		display_tokens(token_array, tok_len);
 		free(token_array);
 	}
 }
@@ -74,6 +78,8 @@ void interactive()
 int main(int argc, char * *argv)
 {
 	int tok_len, sym_len;
+	struct symbol *symbol_table;
+	struct token *token_array;
 
 	if (argc<2)
 		interactive();
@@ -91,12 +97,14 @@ int main(int argc, char * *argv)
 
 		token_array = malloc(sizeof(struct token) * (count_tokens(src_code, status.st_size)+1));
 
-		tok_len = tokenize(src_code, status.st_size, token_array);
+		tok_len = tokenize(src_code, status.st_size, token_array) + 1;
 
-		sym_len = parse_count_symbols(token_array, n);
+		tok_len = parse_pass0(token_array, tok_len);
+		sym_len = parse_count_symbols(token_array, tok_len);
+
 		parse(token_array, symbol_table);
 
-		display_tokens(token_array, tok_len+1);
+		display_tokens(token_array, tok_len);
 	}
 
 	return 0;

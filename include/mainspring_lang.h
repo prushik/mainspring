@@ -54,6 +54,7 @@ static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&"
 #define CHAR_TYPE_STR 5
 #define CHAR_TYPE_SPE 6
 #define CHAR_TYPE_NUL 7
+#define CHAR_TYPE_COM 16
 
 #define CHARSETS 7
 static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.:`@$", "\"", "#;\\"};

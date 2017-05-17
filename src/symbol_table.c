@@ -1,3 +1,4 @@
+#include <string.h>
 #include "host_config.h"
 #include "lang_config.h"
 #include "tokenizer.h"

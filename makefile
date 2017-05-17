@@ -1,7 +1,7 @@
 MCC_SRC = src/tokenizer.c src/symbol_table.c
 CALC_SRC = src/tokenizer.c src/symbol_table.c src/tools/calc.c
-DIAL_SRC = src/tokenizer.c src/symbol_table.c src/tools/dial.c 
-DIAL2_SRC = src/tokenizer.c src/symbol_table.c src/tools/dial2.c 
+DIAL_SRC = src/tokenizer.c src/symbol_table.c src/parser.c src/tools/dial.c 
+DIAL2_SRC = src/tokenizer.c src/symbol_table.c src/parser.c src/tools/dial2.c 
 DEBUG ?= -DDEBUG -g -Og
 CFLAGS = -Wno-implicit-function-declaration -I./include -I.
 LDFLAGS = -lm
