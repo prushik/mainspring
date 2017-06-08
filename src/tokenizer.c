@@ -23,7 +23,7 @@ static inline int token_boundary(const char *expr, int pos, int type, int start_
 		for (i = 0; i < strlen(char_end[type]); i++)
 			if (char_end[type][i] == expr[pos-1])
 				return 1; // we just passed an end character
-		return 0; // We dud not pass an end character
+		return 0; // We did not pass an end character
 	}
 	return 0; // Only happens if this is the first character
 }

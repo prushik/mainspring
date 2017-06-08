@@ -30,3 +30,11 @@ however, there are cases where this is not possible. If such a case
 arises, the Mainspring compiler will issue a warning. If multiple 
 variables are declared occupying the same register, the variables will 
 point to the same value.
+
+# labels
+In addition to the data sizes available in mainspring, variables can 
+also be declared without a size. Unsized variables, known as labels, 
+are declared by specifying the symbol name, followed by a colon.
+
+
+# declarations

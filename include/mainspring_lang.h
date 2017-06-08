@@ -41,9 +41,10 @@ static const char *reserved[] = {
 #define OP_DOT 20
 #define OP_INC 21
 #define OP_DEC 22
+#define OP_LAB 23
 
-#define OPERATORS 23
-static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&","|","&&","||","!","^","~",">","<",",",".","++","--"};
+#define OPERATORS 24
+static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&","|","&&","||","!","^","~",">","<",",",".","++","--",":"};
 
 #define CHAR_TYPE_INV -1
 #define CHAR_TYPE_NUM 0

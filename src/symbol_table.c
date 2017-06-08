@@ -31,3 +31,12 @@ int count_symbols(struct token *tokens, int n_tok)
 		//figure out when a given keyword means what.
 	}
 }
+
+int add_symbol(struct token *tokens, struct symbol table, int active, int tok_n)
+{
+	int i,j;
+	for (i = 0; i < active; i++)
+	{
+		
+	}
+}
