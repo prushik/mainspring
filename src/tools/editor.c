@@ -37,6 +37,38 @@ static inline int is_keyword(struct token *tok)
 
 static int cursor_x=0, frame_v=0, token_n=0;
 
+static char *disp_buffer;
+static int disp_buffer_pos, disp_buffer_size;
+
+void buffer_clear()
+{
+	disp_buffer_pos=0;
+	disp_buffer_size=0;
+}
+
+void buffer_init(int x, int y)
+{
+	disp_buffer = (char*)malloc(x*y*2);
+	buffer_clear();
+}
+
+void buffer_write(const char *data, int size)
+{
+	int qwordsize = (size >> 3);
+	int i;
+	for (i=0; i <= qwordsize; i++)
+	{
+		((qword*)(disp_buffer+disp_buffer_pos))[i] = ((qword*)data)[i];
+	}
+	disp_buffer_pos += size;
+	disp_buffer_size += size;
+}
+
+void buffer_present()
+{
+	(void)write(1, disp_buffer, disp_buffer_size);
+}
+
 void move_cursor(struct token *tokens, int n_tok, int x, int y)
 {
 	cursor_x += x;
@@ -113,26 +145,29 @@ void display_page(struct token *tokens, int n_tokens, int sel, int y, int w, int
 			esc[3]+=fgcolor;
 			// esc[6]+=bgcolor;
 
-			write(1, esc, 5);
+			buffer_write(esc, 5);
 			if (i != token_n)
 			{
-				write(1, tokens[i].text, tokens[i].text_len);
+				buffer_write(tokens[i].text, tokens[i].text_len);
 			} else {
-				write(1, "\x1b[4m", 4);
-				write(1, tokens[i].text, cursor_x);
-				write(1, "\x1b[7m", 4);
-				write(1, &tokens[i].text[cursor_x], 1);
-				write(1, "\x1b[27m", 5);
-				write(1, &tokens[i].text[cursor_x+1], tokens[i].text_len - (cursor_x+1));
+				buffer_write("\x1b[4m", 4);
+				buffer_write(tokens[i].text, cursor_x);
+				buffer_write("\x1b[7m", 4);
+				buffer_write(&tokens[i].text[cursor_x], 1);
+				buffer_write("\x1b[27m", 5);
+				buffer_write(&tokens[i].text[cursor_x+1], tokens[i].text_len - (cursor_x+1));
 			}
-			write(1, "\x1b[0m", 4);
+			buffer_write("\x1b[0m", 4);
 		}
 	}
+	
+	buffer_present();
 }
 
 void clear()
 {
-	write(1,"\x1b[H\x1b[J",6);
+	buffer_clear();
+	buffer_write("\x1b[H\x1b[J",6);
 }
 
 static struct termios orig_term_attr;
@@ -147,12 +182,12 @@ void disable_canon()
 	//    new_term_attr.c_cc[VTIME] = 0;
 	//    new_term_attr.c_cc[VMIN] = 0;
 	tcsetattr(fileno(stdin), TCSANOW, &new_term_attr);
-	write(1,"\x1b[?25l",6);
+	(void)write(1,"\x1b[?25l",6);
 }
 
 void enable_canon()
 {
-	write(1,"\x1b[?25h",6);
+	(int)write(1,"\x1b[?25h",6);
 
 	/* restore the original terminal attributes */
 	tcsetattr(fileno(stdin), TCSANOW, &orig_term_attr);
@@ -200,6 +235,8 @@ int main(int argc, char **argv)
 	disable_canon();
 
 	get_size(&w,&h);
+	
+	buffer_init(w,h);
 
 	clear();
 	display_page(token_array, n+1, sel, y, w, h);
