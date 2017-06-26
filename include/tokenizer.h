@@ -1,14 +1,16 @@
 struct token
 {
-	int type;
-	int level;
-	int group_id;
-	int group_depth;
-	long sym;
-	int text_len;
-	const char *text;
-	int argc;
-	struct token *argv[6];
+	int type;			//type of token
+	int level;			//
+	int group_id;		//id of current group
+	int group_parent_id;//id of parent group
+	int group_depth;	//depth of group nesting
+	long sym;			//symbolic representation of token (machine readable)
+	int text_len;		//length of token text
+	const char *text;	//pointer to text of token
+	int argc;			//number of operands
+	int argv[6];		//token numbers of operands to this token
+	long custom_flags;	//reserved for application use
 };
 
 #ifndef RESERVED_KEYWORDS

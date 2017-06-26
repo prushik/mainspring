@@ -52,6 +52,8 @@ void buffer_init(int x, int y)
 	buffer_clear();
 }
 
+// This probably only works on 64 bit systems. basically its a 64 bit
+// memcpy with an implied destination
 void buffer_write(const char *data, int size)
 {
 	int qwordsize = (size >> 3);
@@ -123,6 +125,8 @@ void display_page(struct token *tokens, int n_tokens, int sel, int y, int w, int
 		fgcolor=3;
 		if (tokens[i].type == CHAR_TYPE_GRP)
 		fgcolor=6;
+		if (tokens[i].type == CHAR_TYPE_COM)
+		fgcolor=4;
 		if (tokens[i].type == CHAR_TYPE_SYM)
 		if (is_keyword(&tokens[i]))
 		fgcolor=5;
@@ -160,7 +164,7 @@ void display_page(struct token *tokens, int n_tokens, int sel, int y, int w, int
 			buffer_write("\x1b[0m", 4);
 		}
 	}
-	
+
 	buffer_present();
 }
 
@@ -169,6 +173,8 @@ void clear()
 	buffer_clear();
 	buffer_write("\x1b[H\x1b[J",6);
 }
+
+
 
 static struct termios orig_term_attr;
 static struct termios new_term_attr;
@@ -231,6 +237,8 @@ int main(int argc, char **argv)
 	token_array = malloc(sizeof(struct token) * (count_tokens(src_code, status.st_size)+1));
 
 	n = tokenize(src_code, status.st_size, token_array);
+
+	n = tokenize_fixup(token_array, n+1);
 
 	disable_canon();
 

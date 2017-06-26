@@ -144,7 +144,51 @@ int tokenize(const char *expr, unsigned int len, struct token *token_array)
 	return n_tok;
 }
 
+// This function will cleanup the tokenization, catching any type of
+// tokenization which can not be handled in one pass.
+// Ideally, this should not be needed if preprocessing is already
+// completed. This handles: comments
+int tokenize_fixup(struct token *tokens, int tok_len)
+{
+	int i,j,k,l;
+	for (i=0; i<tok_len ; i++)
+	{
+		if (tokens[i].type == CHAR_TYPE_OPR)
+		{
+			//check if this is a comment
+			if (tokens[i].text_len > 1 && tokens[i].text[0] == '/' && tokens[i].text[1] == '/')
+			{
+				for (j = i; j < tok_len; j++)
+				{
+					if (tokens[j].type == CHAR_TYPE_WHT)
+					{
+						for (k = 0; k < tokens[j].text_len; k++)
+							if (tokens[j].text[k] == '\n')
+								break;
+						if (tokens[j].text[k] == '\n')
+						{
+							// then we need to merge i-j into i and mark i as a comment
+							for (k = i; k < j; k++)
+								tokens[i].text_len += tokens[k].text_len;
+							for (k = i+1; k < j; k++)
+							{
+								for (l = i+1; l < tok_len-1; l++)
+									memcpy(&tokens[l], &tokens[l+1], sizeof(struct token));
+								tok_len += -1;
+							}
+							tokens[i].type = CHAR_TYPE_COM;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	return tok_len;
+}
+
 //This function will print an error message and nullify an invalid expression to prevent it from processing
+//since it prints to the screen, it should be removed or moved elsewhere. Currently used by calc
 int expr_error(const char *msg, int tok_n, struct token *token_array)
 {
 	printf("Error related to token #%d (\"",tok_n);
