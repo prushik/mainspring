@@ -53,6 +53,18 @@ int id_operator(const char *op_str, int len)
 	return OP_COM; // ? I needed something to use for invalid operators
 }
 
+int id_punctuator(const char *punc_str, int len)
+{
+	int i;
+	for (i = 0; i < PUNCTUATORS; i++)
+	{
+		if (strlen(punctuator[i]) == len && strncmp(punctuator[i], punc_str, len) == 0)
+			return i;
+	}
+
+	return PUNC_INVD;
+}
+
 int count_tokens(const char *expr, unsigned int len)
 {
 	int cur_tok, n_tok=0, tok_start_pos=0;
@@ -111,6 +123,10 @@ int tokenize(const char *expr, unsigned int len, struct token *token_array)
 			{
 				token_array[n_tok].sym = id_operator(token_array[n_tok].text, token_array[n_tok].text_len);
 			}
+			if (cur_tok == CHAR_TYPE_SPE)
+			{
+				token_array[n_tok].sym = id_punctuator(token_array[n_tok].text, token_array[n_tok].text_len);
+			}
 			cur_tok = id_token_str(&expr[i]); // learn what the next token is
 			n_tok++;
 			tok_start_pos = i;
@@ -139,6 +155,10 @@ int tokenize(const char *expr, unsigned int len, struct token *token_array)
 	if (cur_tok == CHAR_TYPE_OPR)
 	{
 		token_array[n_tok].sym = id_operator(token_array[n_tok].text, token_array[n_tok].text_len);
+	}
+	if (cur_tok == CHAR_TYPE_SPE)
+	{
+		token_array[n_tok].sym = id_punctuator(token_array[n_tok].text, token_array[n_tok].text_len);
 	}
 
 	return n_tok;

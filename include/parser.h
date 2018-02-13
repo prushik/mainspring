@@ -14,3 +14,31 @@ struct state
 	dword group_level;
 	qword token_num;
 };
+
+// this represents a parse tree for a sentence
+struct parse_sentence
+{
+	qword start_tok; // first token of sentence in token stream
+	qword end_tok; // last token of sentence in token stream
+	dword block_level;
+};
+
+#define PARSE_NODE_BLOCK 1
+#define PARSE_NODE_DECLARATION 2
+#define PARSE_NODE_DEFINITION 4
+#define PARSE_NODE_EXPRESSION 8
+#define PARSE_NODE_STATEMENT 16
+#define PARSE_NODE_ 0
+
+
+// A node of the parse tree. I suppose that this should replace sentence.
+// or, can't we just like the token structures be the leaves and this be 
+// the sentence, and than we have a "parse tree", right?
+struct parse_node
+{
+	qword start_tok; // first token of sentence in token stream
+	qword end_tok; // last token of sentence in token stream
+	qword node_type;
+	struct parse_node *parent;
+	struct parse_node *children[2];
+};

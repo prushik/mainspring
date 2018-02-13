@@ -17,3 +17,5 @@
 #if LANG == LANG_MAINSPRING_ASSEMBLER
 	#include "assembler_lang.h"
 #endif
+
+#include "lang_defaults.h"

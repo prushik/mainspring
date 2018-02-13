@@ -41,10 +41,19 @@ static const char *reserved[] = {
 #define OP_DOT 20
 #define OP_INC 21
 #define OP_DEC 22
-#define OP_LAB 23
 
-#define OPERATORS 24
-static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&","|","&&","||","!","^","~",">","<",",",".","++","--",":"};
+#define OPERATORS 23
+static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&","|","&&","||","!","^","~",">","<",",",".","++","--"};
+
+#define PUNC_INVD -1
+#define PUNC_LABL 0
+#define PUNC_ARGS 1
+#define PUNC_PP 2
+#define PUNC_TERM 3
+#define PUNC_ESC 4
+
+#define PUNCTUATORS 5
+static const char *punctuator[] = {":",",","#",";","\\"};
 
 #define CHAR_TYPE_INV -1
 #define CHAR_TYPE_NUM 0
@@ -58,6 +67,6 @@ static const char *operator[] = {"+","-","*","/","%","<<",">>","=","==","!=","&"
 #define CHAR_TYPE_COM 16
 
 #define CHARSETS 7
-static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.:`@$", "\"", "#;\\"};
-static const char *char_set[] = {"0123456789xabcdefABCDEF", "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.:`@$", "",   "#;\\"};
+static const char *char_ini[] = {"0123456789",              "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",           " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.`@$", "\"", ":,#;\\"};
+static const char *char_set[] = {"0123456789xabcdefABCDEF", "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", " \r\n\t\0", "([{}])", "+-*/%><=!&|,^~.`@$", "",   ":,#;\\"};
 static const char *char_end[] = {"",                        "",                                                                "",          "",       "",                    "\"", ""};

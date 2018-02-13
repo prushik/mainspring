@@ -14,7 +14,3 @@ struct symbol
 	int type;
 	int reg;
 };
-
-
-int keyword_index(struct token *tok);
-int count_symbols(struct token *tokens, int n_tok);

@@ -102,13 +102,13 @@ int main(int argc, char * *argv)
 
 		tok_len = parse_pass0(token_array, tok_len);
 		sym_len = parse_count_symbols(token_array, tok_len);
-		
+
 		symbol_table = malloc(sizeof(struct symbol) * (sym_len));
 
-		parse(token_array, symbol_table);
+		parse(token_array, tok_len, symbol_table);
 
 		display_tokens(token_array, tok_len);
-		
+
 		printf("number of symbols: %d\n", sym_len);
 	}
 
