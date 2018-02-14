@@ -7,10 +7,11 @@
 
 struct symbol
 {
-	int token_num;
-	const char *text;
-	int text_len;
-	int size;
-	int type;
-	int reg;
+	int token_num; // token number in stream
+	const char *text; // text of identifier name
+	int text_len; // length of identifier name
+	native addr; // address in memory
+	native reg; // register designated to hold data
+	int size; // size in bits (or 0 for unknown)
+	int type; // the type
 };

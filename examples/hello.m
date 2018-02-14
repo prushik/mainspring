@@ -1,6 +1,8 @@
 #define sys_write 1
 #define sys_exit 60
 
+prototype rax syscall(rax number, rdi arg1, rsi arg2, rdx arg3, r10 arg4, r8 arg5, r9 arg6);
+
 section text
 {
 	msg: byte "Hello World!\n\0";

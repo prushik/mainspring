@@ -4,6 +4,7 @@
 #define HOST_BITS128 0
 
 #if (HOST_BITS64)
+	typedef unsigned long	native;
 	typedef unsigned long	qword;
 	typedef unsigned int	dword;
 	typedef unsigned short	word;

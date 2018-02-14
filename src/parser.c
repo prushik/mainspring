@@ -150,7 +150,7 @@ int parse(struct token *tokens, int tok_len, struct symbol *symbols)
 	int i, sym_cur=0;
 	for (i=0; i<tok_len ; i++)
 	{
-		if (parse_state & PARSE_STATE_OPEN|PARSE_STATE_IN_BLOCK)
+		if (parse_state == PARSE_STATE_OPEN || parse_state == PARSE_STATE_IN_BLOCK)
 		{
 			parse_identify_sentence(tokens, i, symbols);
 		}
@@ -190,7 +190,15 @@ int parse_declaration(struct token *tokens, int tok_n, struct symbol *symbols)
 			{
 				printf("%c", tokens[tok_n+i].text[j]);
 			}
-			printf(" <-- declaration\n");
+
+			if (tokens[tok_n+i+1].type == CHAR_TYPE_GRP)
+			{
+				printf(" <-- function declaration\n");
+			}
+			if (tokens[tok_n+i+1].type == CHAR_TYPE_OPR)
+			{
+				printf(" <-- variable declaration\n");
+			}
 
 			add_symbol(tokens, symbols, 0, tok_n);
 
